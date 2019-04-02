@@ -35,11 +35,10 @@ class StreamListener(tweepy.StreamListener):
         if (self.count <= tweet_count):
             text = status._json['text']
             text = re.sub(r'https:\/\/.*[\s\r\n]*', '', text, flags=re.MULTILINE)
-            text = re.sub(r'&amp;apos;', '\'', text, flags=re.MULTILINE)
-            text.lower().rstrip("\n\t\r")
+            text = text.lower().rstrip("\n\r\t")
             if  (isEnglish(text)) and \
                 (not status.retweeted) and \
-                ("RT @" not in text) and\
+                ("rt @" not in text) and\
                 len(text) > len(search_terms[0]):
                 if any(word in text for word in search_terms):
                     print(text)
