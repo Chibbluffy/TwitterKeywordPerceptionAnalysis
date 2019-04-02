@@ -1,83 +1,64 @@
 #!/usr/bin/env python
 
-#-----------------------------------------------------------------------
-# twitter-stream-format:
-#  - ultra-real-time stream of twitter's public timeline.
-#    does some fancy output formatting.
-#-----------------------------------------------------------------------
-
-from twitter import *
-import re
-
-search_term = "Google,google"
-
-#-----------------------------------------------------------------------
-# import a load of external features, for text display and date handling
-# you will need the termcolor module:
-#
-# pip install termcolor
-#-----------------------------------------------------------------------
-from time import strftime
-from textwrap import fill
-from termcolor import colored
-from email.utils import parsedate
-
-#-----------------------------------------------------------------------
-# load our API credentials
-#-----------------------------------------------------------------------
 import sys
-sys.path.append(".")
 import config
-import codecs
+import tweepy
+import time
+import operator
+import re
+import pprint
 
-#-----------------------------------------------------------------------
-# create twitter streaming API object
-#-----------------------------------------------------------------------
-auth = OAuth(config.access_key,
-             config.access_secret,
-             config.consumer_key,
-             config.consumer_secret)
-stream = TwitterStream(auth = auth, secure = True)
+# setup
+auth = tweepy.OAuthHandler(config.consumer_key, config.consumer_secret)
+auth.set_access_token(config.access_key, config.access_secret)
+api = tweepy.API(auth)
+result = ""
+search_terms = ["Apple", "apple"]
+filename = "apple.txt"
+tweet_count = 300
 
-#-----------------------------------------------------------------------
-# iterate over tweets matching this filter text
-#-----------------------------------------------------------------------
-tweet_iter = stream.statuses.filter(track = search_term,language="en",encoding="ascii")
+def isEnglish(s):
+    try:
+        s.encode(encoding='utf-8').decode('ascii')
+    except UnicodeDecodeError:
+        return False
+    else:
+        return True
 
-pattern = re.compile("%s" % search_term, re.IGNORECASE)
-file= open("google.txt","w")
-i=0
-for tweet in tweet_iter:
-    #if 'lang' in tweet and tweet['lang']=='en':
-    # turn the date string into a date object that python can handle
-    timestamp = parsedate(tweet["created_at"])
+class StreamListener(tweepy.StreamListener):
+    def __init__(self):
+        self.saveFile = open(filename, 'a')
+        self.count = 0
+        super(StreamListener, self).__init__()
 
-    # now format this nicely into HH:MM:SS format
-    timetext = strftime("%H:%M:%S", timestamp)
+    def on_status(self, status):
+        if (self.count <= tweet_count):
+            text = status._json['text']
+            text = re.sub(r'https:\/\/.*[\s\r\n]*', '', text, flags=re.MULTILINE)
+            text = re.sub(r'&amp;apos;', '\'', text, flags=re.MULTILINE)
+            text.lower().rstrip("\n\t\r")
+            if  (isEnglish(text)) and \
+                (not status.retweeted) and \
+                ("RT @" not in text) and\
+                len(text) > len(search_terms[0]):
+                if any(word in text for word in search_terms):
+                    print(text)
+                    self.saveFile.write(text)
+                    self.saveFile.write('\n')
+                    self.count += 1
+            return True
+        else:
+            self.saveFile.close()
+            return False
+    def on_error(self, status_code):
+        if status_code == 420:
+            return False
 
-    # colour our tweet's time, user and text
-    time_colored = colored(timetext, color = "white", attrs = [ "bold" ])
-    user_colored = colored(tweet["user"]["screen_name"], "green")
-    text_colored = tweet["text"]
+# save stream
+stream_listener = StreamListener()
+stream = tweepy.Stream(auth=api.auth, listener=stream_listener)
+stream.filter(track=search_terms, encoding="ascii")
+# stream.sample()
 
-    # replace each instance of our search terms with a highlighted version
-    #text_colored = pattern.sub(colored(search_term.upper(), "yellow"), text_colored)
 
-    # add some indenting to each line and wrap the text nicely
-    #indent = " " * 11
-    #text_colored = fill(text_colored, 80, initial_indent = indent, subsequent_indent = indent)
 
-    # now output our tweet
-    #sa= str(text_colored)
-    st = ' @'+ tweet["user"]["screen_name"] + '\t'+ tweet["text"]
-    #st = str(st)
-    st= st.encode("utf-8","replace")
-    #st = unicode(st, "utf-8", errors="ignore")
-    #st = (str(text_colored)+ ' @'+ str(user_colored)).encode('ascii','ignore')
-    file.write(st + '\n')
-    #print("(%s) @%s" % (time_colored, user_colored))
-    #print("%s" % (text_colored))
-    if(i > 300):
-        break
-    i= i+1
-file.close()
