@@ -38,7 +38,7 @@ class StreamListener(tweepy.StreamListener):
             text = text.lower().rstrip("\n\r\t")
             if  (isEnglish(text)) and \
                 (not status.retweeted) and \
-                ("rt @" not in text) and\
+                (text.startswith('rt ')) and\
                 len(text) > len(search_terms[0]):
                 if any(word in text for word in search_terms):
                     print(text)
