@@ -53,11 +53,7 @@ class StreamListener(tweepy.StreamListener):
         if status_code == 420:
             return False
 
-# save stream
+# start stream
 stream_listener = StreamListener()
 stream = tweepy.Stream(auth=api.auth, listener=stream_listener)
 stream.filter(track=search_terms, encoding="ascii")
-# stream.sample()
-
-
-
