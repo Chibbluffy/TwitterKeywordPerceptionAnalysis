@@ -13,12 +13,22 @@ auth = tweepy.OAuthHandler(config.consumer_key, config.consumer_secret)
 auth.set_access_token(config.access_key, config.access_secret)
 api = tweepy.API(auth)
 result = ""
-search_terms = ["Chase", "chase"]
-filename = "chaseTweets.txt"
+# search_terms = ["Chase", "chase"]
+# filename = "chaseTweets.txt"
 # search_terms = ["Amazon", "amazon"]
 # filename = "amazonTweets.txt"
 # search_terms = ["Apple", "apple"]
 # filename = "appleTweets.txt"
+# search_terms = ["Google", "google"]
+# filename = "googleTweets.txt"
+# search_terms = ["Microsoft", "microsoft"]
+# filename = "microsoftTweets.txt"
+# search_terms = ["Facebook", "facebook"]
+# filename = "facebookTweets.txt"
+search_terms = ["Sprint", "sprint"]
+filename = "sprintTweets.txt"
+
+
 tweet_count = 300
 
 def isEnglish(s):
