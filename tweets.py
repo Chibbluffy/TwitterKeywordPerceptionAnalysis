@@ -13,8 +13,12 @@ auth = tweepy.OAuthHandler(config.consumer_key, config.consumer_secret)
 auth.set_access_token(config.access_key, config.access_secret)
 api = tweepy.API(auth)
 result = ""
-search_terms = ["Apple", "apple"]
-filename = "apple.txt"
+search_terms = ["Chase", "chase"]
+filename = "chaseTweets.txt"
+# search_terms = ["Amazon", "amazon"]
+# filename = "amazonTweets.txt"
+# search_terms = ["Apple", "apple"]
+# filename = "appleTweets.txt"
 tweet_count = 300
 
 def isEnglish(s):
@@ -35,11 +39,12 @@ class StreamListener(tweepy.StreamListener):
         if (self.count <= tweet_count):
             text = status._json['text']
             text = re.sub(r'https:\/\/.*[\s\r\n]*', '', text, flags=re.MULTILINE)
-            text = text.lower().rstrip("\n\r\t")
-            if  (isEnglish(text)) and \
+            text = text.rstrip("\n\r\t")
+            lowered = text.lower()
+            if  (isEnglish(lowered)) and \
                 (not status.retweeted) and \
-                (text.startswith('rt ')) and\
-                len(text) > len(search_terms[0]):
+                (not lowered.startswith('rt ')) and\
+                len(lowered) > len(search_terms[0]):
                 if any(word in text for word in search_terms):
                     print(text)
                     self.saveFile.write(text)
