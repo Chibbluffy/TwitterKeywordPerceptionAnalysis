@@ -1,5 +1,13 @@
-filename = "Companies.txt"
-outfilename = "CompanyList.txt"
+import sys
+
+filename = sys.argv[1]
+if sys.argv[2]:
+    outfilename = sys.argv[2]
+else:
+    outfilename = sys.argv[1]
+# filename = "Companies.txt"
+# outfilename = "CompanyList.txt"
+
 lines_seen = set()
 output = open(outfilename, 'w')
 for line in open(filename, 'r'):
