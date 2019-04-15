@@ -1,7 +1,7 @@
 import sys
 
 filename = sys.argv[1]
-if sys.argv[2]:
+if len(sys.argv) == 3:
     outfilename = sys.argv[2]
 else:
     outfilename = sys.argv[1]
