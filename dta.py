@@ -67,7 +67,7 @@ def generate_arff_header(f):
 
 def generate_arff_data(f, tweets):
     t0 = time()
-    model = w2v_load_model('GoogleNews-vectors-negative300.bin')
+    model = w2v_load_model('../GoogleNews-vectors-negative300.bin')
     print 'loading model: %s' % (time() - t0)
 
     dta = DeepTextAnalyzer(model)
