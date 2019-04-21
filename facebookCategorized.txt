@@ -37,7 +37,7 @@ unknown     Siguenos en Facebook
 relevant    @MattWalshBlog Fuck @twitter, @Google @facebook @instagram for being leftist supporting pussies. We see you.
 relevant    The First Black Hole Photo, Facebook Changes, and More News
 relevant    I dont have, nor do I want Facebook
-relevant    O Facebook me recorda cada coisa q pqp, eu era mt retardada
+unknown     O Facebook me recorda cada coisa q pqp, eu era mt retardada
 relevant    We have a #Facebook page, come by and say Hi!
 relevant    #Facebook  #Twitter  #censorship  #Conservative
 relevant    Like what you see here? You can get even more in-depth job search tips and advice over on our Facebook page.
@@ -301,7 +301,7 @@ relevant    En twitter   /    En facebook
 relevant    How #Google, #Facebook Actions Could Bring Big #Tech Under Attack in US
 unknown     Tanpa harus follow account tertentu, anda dapat mention (tag jika di facebook) account seseorang.
 relevant    @WzeroMN They have a pretty great Facebook page.
-relevant      Facebook adds tribute section, new tools for memorialized profiles
+relevant    Facebook adds tribute section, new tools for memorialized profiles
 relevant    Add facebook ~&gt;
 relevant    No worries we can do it on Facebook! More money anyway
 relevant    Facebook Will Offer VR Livestream of F8 Keynote on Go &amp; Gear VR
