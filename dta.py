@@ -52,17 +52,17 @@ def load_tweets(f):
     tweets = []
     loaded = json.loads(f)
     for x in loaded:
-        id_str = x["id_str"]
+        #id_str = x["id_str"]
         label = x["label"]
         text = x["text"]
-        tweets.append([id_str, label, text])
+        tweets.append([label, text])
     return tweets
 
-def generate_arff_header(f):
+def generate_arff_header(f, size):
     f.write('@relation Word2VecRelation\n\n')
-    for i in range(300):
+    for i in range(size):
         f.write('@attribute feature%s numeric\n' % i)
-    f.write('@attribute class { relevant, irrelevant }\n')
+    f.write('@attribute class { relevant, irrelevant, unknown }\n')
     f.write('\n')
 
 def generate_arff_data(f, tweets):
@@ -73,7 +73,8 @@ def generate_arff_data(f, tweets):
     dta = DeepTextAnalyzer(model)
 
     f.write('@data\n');
-    for _, label, text in tweets:
+    #for _, label, text in tweets:
+    for label, text in tweets:
         vector = w2v_vector(dta, text, label)
         if vector is not None:
             f.write('%s,%s\n' % (','.join(vector), label))
@@ -92,21 +93,21 @@ def w2v_vector(dta, text, label):
     return [0.0 if v==None else str(v) for v in vector]
 
 if __name__ == '__main__':
-
     # 1. load tweets
     tweets = []
     with open(sys.argv[1], 'r') as f:
         for line in f:
             loaded = json.loads(line)
-            id_str = loaded["id_str"]
+            #id_str = loaded["id_str"]
             label = loaded["label"]
             text = loaded["text"]
-            tweets.append([id_str, label, text])
+            #tweets.append([id_str, label, text])
+            tweets.append([label, text])
 
     # 2. generate ARFF file
     with open(sys.argv[1][:-4]+'.arff', 'w') as f:
         # generate the header
-        generate_arff_header(f)
+        generate_arff_header(f, len(tweets))
 
         # generate the data part
         generate_arff_data(f, tweets)
