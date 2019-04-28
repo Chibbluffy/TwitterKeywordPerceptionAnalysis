@@ -1,2 +1,6 @@
 tweepy
+pandas
+sklearn
+gensim
+numpy
 
