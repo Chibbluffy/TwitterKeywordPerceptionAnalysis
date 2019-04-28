@@ -98,10 +98,8 @@ if __name__ == '__main__':
     with open(sys.argv[1], 'r') as f:
         for line in f:
             loaded = json.loads(line)
-            #id_str = loaded["id_str"]
             label = loaded["label"]
             text = loaded["text"]
-            #tweets.append([id_str, label, text])
             tweets.append([label, text])
 
     # 2. generate ARFF file
