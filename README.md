@@ -5,6 +5,7 @@
 	[Optional]: Run multiple times on multiple terms, just change terms in code and output file name
 `python tweets.py`
 3. run helper files on tweets if desired, and convert them to json format
+	Note: There is no helper script to make the tweets into json format
 `python removeDupeLines.py <inputfile> <outputfile>`
 `python appendAllFiles.py <outputfile> <inputfile1> <inputfile2> <inputfilex>`
 4. run analyzer
